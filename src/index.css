@@ -11,3 +11,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h1 {
+  text-align: center;
+}
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, calc(25% - 20px));
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.restaurant-container {
+  text-align: center;
+  height: 250px;
+  line-height: 1.2;
+  padding-bottom: 50px;
+}
+
+.restaurant-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.restaurant-container p {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+
