@@ -1,11 +1,14 @@
 import React from "react";
 import axios from "axios";
+import Restaurant from "./Restaurant";
+import { Link, useLocation } from "react-router-dom";
 
 class RestaurantSuggestions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       restaurants: [],
+      showNewPage: false
     };
   }
 
@@ -19,17 +22,27 @@ class RestaurantSuggestions extends React.Component {
     }
   }
 
+  handleImageClick = () => {
+    this.setState({ showNewPage: true });
+  };
+
   render() {
+    
     return (
       <div>
-        <h1>Restaurant Suggestions:</h1>
+        <h1>Restaurant Suggestions</h1>
         <div className="restaurant-grid">
-          {this.state.restaurants.map((restaurant) => (
+        {this.state.restaurants.map((restaurant) => {
+          console.log(restaurant);
+          return (
             <div className="restaurant-container" key={restaurant.id}>
-              <img src={restaurant.image_url} alt={restaurant.name} />
-              <p>{restaurant.name}</p>
+               <p>{restaurant.name}</p>
+              <Link to={{pathname: "/restaurant"}} state={restaurant}>
+                <img src={restaurant.image_url} alt={restaurant.name} onClick={this.handleImageClick} />
+              </Link>
             </div>
-          ))}
+          );
+        })}
         </div>
       </div>
     );

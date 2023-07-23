@@ -29,7 +29,7 @@ app.get("/api/restaurants", async (req, res) => {
   } catch (error) {
     console.error("Error fetching Yelp data:", error);
     res.status(500).send("Error fetching restaurant data");
-  }
+  }   
 });
 
 // start server
