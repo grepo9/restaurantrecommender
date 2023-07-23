@@ -32,20 +32,26 @@ class RestaurantSuggestions extends React.Component {
       <div>
         <h1>Restaurant Suggestions</h1>
         <div className="restaurant-grid">
-        {this.state.restaurants.map((restaurant) => {
-          console.log(restaurant);
-          return (
-            <div className="restaurant-container" key={restaurant.id}>
-               <p>{restaurant.name}</p>
-              <Link to={{pathname: "/restaurant"}} state={restaurant}>
-                <img src={restaurant.image_url} alt={restaurant.name} onClick={this.handleImageClick} />
-              </Link>
-            </div>
-          );
-        })}
+          {this.state.restaurants.map((restaurant) => {
+            console.log(restaurant);
+            return (
+              <div className="restaurant-container" key={restaurant.id}>
+                <p className="restaurant-title">{restaurant.name}</p>
+                <Link to={{ pathname: "/restaurant" }} state={restaurant}>
+                  <img
+                    className="restaurant-image"
+                    src={restaurant.image_url}
+                    alt={restaurant.name}
+                    onClick={this.handleImageClick}
+                  />
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
+    
   }
 }
 

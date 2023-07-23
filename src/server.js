@@ -18,7 +18,7 @@ app.get("/api/restaurants", async (req, res) => {
       },
       params: {
         term: "restaurants",
-        location: "New York, NY",
+        location: "Campbell, CA",
         radius: 1609,
         sort_by: "rating",
         limit: 50,
