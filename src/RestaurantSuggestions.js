@@ -7,18 +7,30 @@ class RestaurantSuggestions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurants: [],
-      showNewPage: false
+      restaurants: JSON.parse(localStorage.getItem("restaurants")) || [],
+      showNewPage: false,
     };
   }
 
   async componentDidMount() {
-    try {
-      const response = await axios.get("http://localhost:5000/api/restaurants");
-      const data = response.data;
-      this.setState({ restaurants: data });
-    } catch (error) {
-      console.error("Error fetching restaurant data:", error);
+    // Check if the restaurants data is available in localStorage
+    const cachedRestaurants = localStorage.getItem("restaurants");
+    if (cachedRestaurants) {
+      console.log("Using cached data from localStorage.");
+      this.setState({ restaurants: JSON.parse(cachedRestaurants) });
+    } else {
+      try {
+        console.log("Making API call to fetch restaurant data...");
+        const response = await axios.get("http://localhost:5000/api/restaurants");
+        const data = response.data;
+        this.setState({ restaurants: data });
+
+        // Save the fetched data to localStorage for caching
+        localStorage.setItem("restaurants", JSON.stringify(data));
+        console.log("Fetched data from API and cached it.");
+      } catch (error) {
+        console.error("Error fetching restaurant data:", error);
+      }
     }
   }
 
@@ -27,13 +39,12 @@ class RestaurantSuggestions extends React.Component {
   };
 
   render() {
-    
     return (
       <div>
         <h1>Restaurant Suggestions</h1>
         <div className="restaurant-grid">
           {this.state.restaurants.map((restaurant) => {
-            console.log(restaurant);
+            // console.log("Rendering restaurant:", restaurant);
             return (
               <div className="restaurant-container" key={restaurant.id}>
                 <p className="restaurant-title">{restaurant.name}</p>
@@ -51,7 +62,6 @@ class RestaurantSuggestions extends React.Component {
         </div>
       </div>
     );
-    
   }
 }
 

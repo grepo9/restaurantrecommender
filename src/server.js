@@ -24,6 +24,7 @@ app.get("/api/restaurants", async (req, res) => {
         limit: 50,
       },
     };
+    console.log('AY LETS GET IT')
     const response = await axios.get(yelpEndpoint, config);
     res.send(response.data.businesses);
   } catch (error) {
@@ -31,6 +32,54 @@ app.get("/api/restaurants", async (req, res) => {
     res.status(500).send("Error fetching restaurant data");
   }   
 });
+
+app.get("/api/recommendations", async (req, res) => {
+  console.log('WOOOOOOOOO', req.query.predictions)
+  try {
+    // Fetch the predictions from the query parameters
+    const predictions = JSON.parse( );
+    console.log('IM GONNA FUCKING SCRTEAM',predictions)
+    // Create an array to store the details of the recommended restaurants
+    const recommendations = [];
+
+    // Loop through the list of business IDs and fetch restaurant details from the Yelp API
+    for (const businessId of predictions) {
+      // Make a request to the Yelp API to get details for each business ID
+      const config = {
+        headers: {
+          Authorization: `Bearer ${yelpApiKey}`,
+        },
+      };
+      const response = await axios.get(`https://api.yelp.com/v3/businesses/${businessId}`, config);
+
+      // Log the Yelp API response
+      console.log("Yelp API Response:", response.data);
+
+      // Extract the relevant details from the Yelp API response
+      const { name, image_url, location, rating, review_count } = response.data;
+
+      // Add the restaurant details to the recommendations array
+      recommendations.push({
+        name,
+        image_url,
+        location,
+        rating,
+        review_count
+      });
+    }
+
+    // Log the list of recommended restaurants
+    console.log("Recommendations:", recommendations);
+
+    // Send the list of recommended restaurants as the response
+    res.json(recommendations);
+  } catch (error) {
+    console.error("Error fetching restaurant recommendations:", error);
+    res.status(500).send("Error fetching restaurant recommendations");
+  }
+});
+
+
 
 // start server
 const port = process.env.PORT || 5000;
