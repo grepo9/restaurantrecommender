@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import loadingSpinner from '../src/images/loading.gif'
 import './Home.css'; 
-import LoadingPopup from './LoadingPopup'; // Import the LoadingPopup component
+import LoadingPopup from './LoadingPopup'; 
 
 
 function Home() {
   const [recommendations, setRecommendations] = useState([]);
-  const [loading, setLoading] = useState(true); // Add a loading state and initialize to true
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     console.log('Making API call to /predict...');
@@ -28,7 +28,7 @@ function Home() {
       .then(data => {
         console.log('Fetched Recommendations:', data);
         setRecommendations(data);
-        setLoading(false); // Set loading to false when data fetching is done
+        setLoading(false); 
       })
       .catch(error => console.log(error));
   };
@@ -37,10 +37,8 @@ function Home() {
     <div>
       <h1>Predicted Suggestions</h1>
 
-      {/* Render the LoadingPopup component based on the loading state */}
       <LoadingPopup isOpen={loading} />
 
-      {/* Show the recommendations when loading is false */}
       {!loading && (
         <div>
           <div className="restaurant-grid">

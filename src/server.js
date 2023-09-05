@@ -6,10 +6,8 @@ const app = express();
 const yelpApiKey = "-52S_yTCwLsqR9SH36zGwNu9KojsOYgILhQYsFCPnnXzQuFH0XxFB5rpu9an8t75zAxcBMYukyksB2hgpoCzzquA8kk-GH4adwC4wIC1EXJwZEZh6UuhI0szk1YyZHYx";
 const yelpEndpoint = "https://api.yelp.com/v3/businesses/search";
 
-// enable cors
 app.use(cors({ origin: "http://localhost:3000" }));
 
-// endpoint to fetch restaurant suggestions
 app.get("/api/restaurants", async (req, res) => {
   try {
     const config = {
@@ -24,7 +22,6 @@ app.get("/api/restaurants", async (req, res) => {
         limit: 50,
       },
     };
-    console.log('AY LETS GET IT')
     const response = await axios.get(yelpEndpoint, config);
     res.send(response.data.businesses);
   } catch (error) {
@@ -34,17 +31,11 @@ app.get("/api/restaurants", async (req, res) => {
 });
 
 app.get("/api/recommendations", async (req, res) => {
-  console.log('WOOOOOOOOO', req.query.predictions)
   try {
-    // Fetch the predictions from the query parameters
-    const predictions = JSON.parse( );
-    console.log('IM GONNA FUCKING SCRTEAM',predictions)
-    // Create an array to store the details of the recommended restaurants
+    const predictions = JSON.parse(req.query.predictions);
     const recommendations = [];
 
-    // Loop through the list of business IDs and fetch restaurant details from the Yelp API
     for (const businessId of predictions) {
-      // Make a request to the Yelp API to get details for each business ID
       const config = {
         headers: {
           Authorization: `Bearer ${yelpApiKey}`,
@@ -52,13 +43,10 @@ app.get("/api/recommendations", async (req, res) => {
       };
       const response = await axios.get(`https://api.yelp.com/v3/businesses/${businessId}`, config);
 
-      // Log the Yelp API response
       console.log("Yelp API Response:", response.data);
 
-      // Extract the relevant details from the Yelp API response
       const { name, image_url, location, rating, review_count } = response.data;
 
-      // Add the restaurant details to the recommendations array
       recommendations.push({
         name,
         image_url,
@@ -68,10 +56,8 @@ app.get("/api/recommendations", async (req, res) => {
       });
     }
 
-    // Log the list of recommended restaurants
     console.log("Recommendations:", recommendations);
 
-    // Send the list of recommended restaurants as the response
     res.json(recommendations);
   } catch (error) {
     console.error("Error fetching restaurant recommendations:", error);
@@ -81,7 +67,6 @@ app.get("/api/recommendations", async (req, res) => {
 
 
 
-// start server
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

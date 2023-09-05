@@ -13,7 +13,6 @@ class RestaurantSuggestions extends React.Component {
   }
 
   async componentDidMount() {
-    // Check if the restaurants data is available in localStorage
     const cachedRestaurants = localStorage.getItem("restaurants");
     if (cachedRestaurants) {
       console.log("Using cached data from localStorage.");
@@ -25,7 +24,6 @@ class RestaurantSuggestions extends React.Component {
         const data = response.data;
         this.setState({ restaurants: data });
 
-        // Save the fetched data to localStorage for caching
         localStorage.setItem("restaurants", JSON.stringify(data));
         console.log("Fetched data from API and cached it.");
       } catch (error) {
